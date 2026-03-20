@@ -25,10 +25,24 @@ console.log("MAIN JS LOADED");
 
 window.OBR = OBR;
 
-OBR.onReady(() => {
+/*OBR.onReady(() => {
     console.log("OBR READY");
     window.OBR_READY = true;
 
     setupContextMenu();
     setupPanel();
+});*/
+
+OBR.onReady(() => {
+    console.log("Monster extension loaded");
+    window.OBR_READY = true;
+
+    setupContextMenu();
+
+    // Wait for DOM
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", setupPanel);
+    } else {
+        setupPanel();
+    }
 });

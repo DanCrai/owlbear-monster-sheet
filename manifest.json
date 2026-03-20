@@ -1,13 +1,13 @@
 {
   "name": "Monster Sheet",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "manifest_version": 1,
   "author": "Dan Crai",
   "description": "Attach and manage monster sheets",
-  "icon": "https://dancrai.github.io/owlbear-monster-sheet/icon.jpeg",
+  "icon": "https://dancrai.github.io/owlbear-monster-sheet/logo.jpeg",
   "action": {
     "title": "Monster Sheet",
     "popover": "https://dancrai.github.io/owlbear-monster-sheet/index.html",
-    "icon": "https://dancrai.github.io/owlbear-monster-sheet/icon.jpeg"
+    "icon": "https://dancrai.github.io/owlbear-monster-sheet/icon.svg"
   }
 }

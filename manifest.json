@@ -2,13 +2,10 @@
   "name": "Monster Sheet",
   "version": "1.0.0",
   "manifest_version": 1,
-  "author": "Dan Crai",
+  "author": "Dan",
   "description": "Attach and manage monster sheets",
-  "homepage_url": "",
-  "icon": "",
   "action": {
     "title": "Monster Sheet",
-    "icon": "",
     "popover": "index.html"
   }
 }

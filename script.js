@@ -2,6 +2,7 @@ let currentMonster = null;
 let OBR_READY = false;
 // Attach JSON to selected token
 async function attachToToken() {
+    console.log("Starting to attach token@");
     if (!window.OBR || !window.OBR_READY) {
         alert("OBR not ready yet");
         return;

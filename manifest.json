@@ -6,6 +6,7 @@
   "description": "Attach and manage monster sheets",
   "action": {
     "title": "Monster Sheet",
-    "popover": "index.html"
+    "popover": "index.html",
+    "icon": "https://dancrai.github.io/owlbear-monster-sheet/SNMIcon.png"
   }
 }

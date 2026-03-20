@@ -1,4 +1,4 @@
-import OBR from "https://cdn.jsdelivr.net/npm/@owlbear-rodeo/sdk@latest/+esm";
+/*import OBR from "https://cdn.jsdelivr.net/npm/@owlbear-rodeo/sdk@latest/+esm";
 console.log("MAIN JS LOADED");
 OBR.onReady(() => {
     // Create a simple UI panel
@@ -15,4 +15,15 @@ OBR.onReady(() => {
     document.getElementById("testBtn").onclick = () => {
         alert("Extension is working!");
     };
+});*/
+
+import OBR from "https://cdn.jsdelivr.net/npm/@owlbear-rodeo/sdk@latest/+esm";
+
+console.log("MAIN JS LOADED");
+
+window.OBR = OBR;
+
+OBR.onReady(() => {
+    console.log("OBR READY");
+    window.OBR_READY = true;
 });

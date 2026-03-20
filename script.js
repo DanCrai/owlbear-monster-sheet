@@ -1,7 +1,12 @@
 let currentMonster = null;
-const OBR = window.OBR;
+let OBR_READY = false;
 // Attach JSON to selected token
 async function attachToToken() {
+    if (!window.OBR || !OBR_READY) {
+        alert("OBR not ready yet");
+        return;
+    }
+
     const text = document.getElementById("jsonInput").value;
 
     if (!text) {
@@ -11,14 +16,14 @@ async function attachToToken() {
 
     const monster = JSON.parse(text);
 
-    const selected = await OBR.scene.items.getSelection();
+    const selected = await window.OBR.scene.items.getSelection();
 
     if (selected.length === 0) {
         alert("Select a token first");
         return;
     }
 
-    await OBR.scene.items.updateItems(selected, (items) => {
+    await window.OBR.scene.items.updateItems(selected, (items) => {
         for (let item of items) {
             item.metadata["monster"] = monster;
         }

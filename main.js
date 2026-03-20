@@ -20,6 +20,7 @@ OBR.onReady(() => {
 import OBR from "https://cdn.jsdelivr.net/npm/@owlbear-rodeo/sdk@latest/+esm";
 import { setupContextMenu } from "./scripts/contextMenu.js";
 import { setupPanel } from "./scripts/panel.js";
+import { setupSelectionListener } from "./scripts/token.js";
 
 console.log("MAIN JS LOADED");
 
@@ -44,5 +45,6 @@ OBR.onReady(() => {
         document.addEventListener("DOMContentLoaded", setupPanel);
     } else {
         setupPanel();
+        setupSelectionListener(); 
     }
 });

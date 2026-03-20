@@ -18,6 +18,8 @@ OBR.onReady(() => {
 });*/
 
 import OBR from "https://cdn.jsdelivr.net/npm/@owlbear-rodeo/sdk@latest/+esm";
+import { setupContextMenu } from "./scripts/contextMenu.js";
+import { setupPanel } from "./scripts/panel.js";
 
 console.log("MAIN JS LOADED");
 
@@ -26,4 +28,7 @@ window.OBR = OBR;
 OBR.onReady(() => {
     console.log("OBR READY");
     window.OBR_READY = true;
+
+    setupContextMenu();
+    setupPanel();
 });

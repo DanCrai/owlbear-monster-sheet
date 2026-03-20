@@ -9,7 +9,7 @@ export async function attachMonsterToToken(items, monsterName) {
 }
 
 export async function getSelectedMonster() {
-    const selected = await OBR.scene.items.getSelection();
+    const selected = await OBR.scene.items.getItems({ selected: true });
     if (!selected.length) return null;
 
     return selected[0].metadata["monsterName"];

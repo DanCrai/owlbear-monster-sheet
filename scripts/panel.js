@@ -3,6 +3,7 @@ import { loadMonster } from "./storage.js";
 
 export function setupPanel() {
     const app = document.getElementById("app");
+    console.log("app element:", document.getElementById("app"));
 
     app.innerHTML = `
         <h3>Monster Sheet</h3>

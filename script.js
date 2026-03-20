@@ -17,7 +17,8 @@ async function attachToToken() {
 
     const monster = JSON.parse(text);
 
-    const selected = await window.OBR.scene.items.getSelection();
+    //const selected = await window.OBR.scene.items.getSelection();
+    const selected = context.items;//.map((item) => item.id);
 
     if (selected.length === 0) {
         alert("Select a token first");

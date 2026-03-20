@@ -1,4 +1,4 @@
-import { getSelectedMonster } from "./scripts/token.js";
+import { getSelectedMonster } from "./token.js";
 
 export function setupPanel() {
     const sheet = document.getElementById("sheet");

@@ -1,5 +1,5 @@
-import { attachMonsterToToken } from "./scripts/token.js";
-import { getMonsterList } from "./scripts/storage.js";
+import { attachMonsterToToken } from "./token.js";
+import { getMonsterList } from "./storage.js";
 
 export function setupContextMenu() {
     OBR.contextMenu.create({

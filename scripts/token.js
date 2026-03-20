@@ -1,3 +1,5 @@
+import { loadMonster } from "./storage.js";
+
 let selectedIds = [];
 
 export function setupSelectionListener() {
@@ -22,6 +24,16 @@ export async function getSelectedMonster() {
     if (!token) return null;
 
     return token.metadata?.monster || null;
+}
+
+export async function attachMonsterToToken(items, monsterName) {
+    const monster = await loadMonster(monsterName);
+
+    await OBR.scene.items.updateItems(items, (updated) => {
+        for (let item of updated) {
+            item.metadata["monster"] = monster;
+        }
+    });
 }
 
 /*export async function attachMonsterToToken(items, monsterName) {

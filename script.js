@@ -1,5 +1,5 @@
 let currentMonster = null;
-
+const OBR = window.OBR;
 // Attach JSON to selected token
 async function attachToToken() {
     const text = document.getElementById("jsonInput").value;

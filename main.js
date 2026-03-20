@@ -1,5 +1,5 @@
 import OBR from "https://cdn.jsdelivr.net/npm/@owlbear-rodeo/sdk@latest/+esm";
-
+console.log("MAIN JS LOADED");
 OBR.onReady(() => {
     // Create a simple UI panel
     const div = document.createElement("div");

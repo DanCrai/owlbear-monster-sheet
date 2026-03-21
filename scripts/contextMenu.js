@@ -18,12 +18,12 @@ export function setupContextMenu() {
 
             updatePanel();
 
-            OBR.popover.open({
+            /*OBR.popover.open({
                 id: "monster-sheet",
                 url: window.location.href,
                 height: 400,
                 width: 300
-            });
+            });*/
         }
     });
 }

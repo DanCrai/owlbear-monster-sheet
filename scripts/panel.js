@@ -35,30 +35,50 @@ export async function updatePanel() {
 
     // --- TOP SECTION ---
     let html = `
-        <div style="display:flex; gap:10px; align-items:center;">
-            <strong>${token.name || "Unnamed Token"}</strong>
+    <div class="topbar">
+        <strong>${token.name || "Unnamed Token"}</strong>
 
-            <select id="monsterDropdown">
-                <option value="">Select Monster</option>
-                ${monsters.map(m =>
+        <select id="monsterDropdown">
+            <option value="">Select Monster</option>
+            ${monsters.map(m =>
         `<option value="${m}" ${monsterMeta.name === m ? "selected" : ""}>${m}</option>`
     ).join("")}
-            </select>
-        </div>
-        <hr/>
-    `;
+        </select>
+    </div>
+    <hr/>
+`;
 
-    // --- SHEET ---
     if (monsterMeta.data) {
         const m = monsterMeta.data;
 
         html += `
+        <div class="sheet">
             <h3>${m.name}</h3>
             <p>HP: ${m.hp}</p>
             <p>DM: ${m.dm}</p>
             <p>OM: ${m.om}</p>
             <p>CM: ${m.cm}</p>
-        `;
+        </div>
+    `;
+
+        // abilties
+        if (m.abilities && m.abilities.length > 0) {
+            html += `<div class="sheet"><h3>Abilities</h3>`;
+
+            for (let ab of m.abilities) {
+                html += `
+                <div class="ability">
+                    <div class="ability-name">${ab.name}</div>
+                    ${ab.desc ? `<div class="small">${ab.desc}</div>` : ""}
+                    ${ab.damage ? `<div class="small">Damage: ${ab.damage}</div>` : ""}
+                    ${ab.ap ? `<div class="small">AP: ${ab.ap}</div>` : ""}
+                    ${ab.cooldown ? `<div class="small">CD: ${ab.cooldown}</div>` : ""}
+                </div>
+            `;
+            }
+
+            html += `</div>`;
+        }
     } else {
         html += `<p>No monster selected</p>`;
     }

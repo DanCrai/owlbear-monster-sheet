@@ -1,22 +1,27 @@
-/*import OBR from "https://cdn.jsdelivr.net/npm/@owlbear-rodeo/sdk@latest/+esm";
+import OBR from "https://cdn.jsdelivr.net/npm/@owlbear-rodeo/sdk@latest/+esm";
+
+import { setupContextMenu } from "./scripts/contextMenu.js";
+import { setupPanel } from "./scripts/panel.js";
+import { setupSelectionListener } from "./scripts/token.js";
+
+
 console.log("MAIN JS LOADED");
+window.OBR = OBR;
 OBR.onReady(() => {
-    // Create a simple UI panel
-    const div = document.createElement("div");
-    div.style.padding = "10px";
-    div.style.color = "white";
-    div.innerHTML = `
-    <h3>Monster Sheet</h3>
-    <button id="testBtn">Test Button</button>
-  `;
 
-    document.body.appendChild(div);
+    console.log("Monster extension loaded");
+    window.OBR_READY = true;
+    setupContextMenu();
+    setupSelectionListener();
 
-    document.getElementById("testBtn").onclick = () => {
-        alert("Extension is working!");
-    };
-});*/
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", setupPanel);
+    } else {
+        setupPanel();
+    }
+});
 
+/*
 import OBR from "https://cdn.jsdelivr.net/npm/@owlbear-rodeo/sdk@latest/+esm";
 import { setupContextMenu } from "./scripts/contextMenu.js";
 import { setupPanel } from "./scripts/panel.js";
@@ -26,13 +31,13 @@ console.log("MAIN JS LOADED");
 
 window.OBR = OBR;
 
-/*OBR.onReady(() => {
+*//*OBR.onReady(() => {
     console.log("OBR READY");
     window.OBR_READY = true;
 
     setupContextMenu();
     setupPanel();
-});*/
+});*//*
 
 OBR.onReady(() => {
     console.log("Monster extension loaded");
@@ -47,4 +52,4 @@ OBR.onReady(() => {
     } else {
         setupPanel();
     }
-});
+});*/

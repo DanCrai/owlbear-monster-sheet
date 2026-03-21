@@ -1,4 +1,24 @@
-import { attachMonsterToToken } from "./token.js";
+import { markTokenAsTracked } from "./token.js";
+
+export function setupContextMenu() {
+    OBR.contextMenu.create({
+        id: "monster-menu",
+        icons: [
+            {
+                icon: "https://dancrai.github.io/owlbear-monster-sheet/context-menu-monster-icon.svg",
+                label: "Attach Monster",
+                filter: {
+                    every: [{ key: "layer", value: "CHARACTER" }]
+                }
+            }
+        ],
+        onClick: async (context) => {
+            await markTokenAsTracked(context.items);
+        }
+    });
+}
+
+/*import { attachMonsterToToken } from "./token.js";
 import { getMonsterList } from "./storage.js";
 
 export function setupContextMenu() {
@@ -31,4 +51,4 @@ export function setupContextMenu() {
             await attachMonsterToToken(context.items, choice);
         }
     });
-}
+}*/

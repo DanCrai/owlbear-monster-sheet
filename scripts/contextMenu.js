@@ -6,7 +6,7 @@ export function setupContextMenu() {
         id: "monster-menu",
         icons: [
             {
-                icon: "https://dancrai.github.io/owlbear-monster-sheet/context-menu-monster-icon.svg",
+                icon: "https://dancrai.github.io/owlbear-monster-sheet/context-menu-monster-icon-small.svg",
                 label: "Attach Monster",
                 filter: {
                     every: [{ key: "layer", value: "CHARACTER" }]

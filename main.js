@@ -39,12 +39,12 @@ OBR.onReady(() => {
     window.OBR_READY = true;
 
     setupContextMenu();
+    setupSelectionListener(); 
 
     // Wait for DOM
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", setupPanel);
     } else {
         setupPanel();
-        setupSelectionListener(); 
     }
 });

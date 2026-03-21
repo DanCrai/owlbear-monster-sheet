@@ -7,6 +7,10 @@ export function setupPanel() {
     OBR.player.onChange(() => {
         updatePanel();
     });
+
+    OBR.scene.items.onChange(() => {
+        updatePanel();
+    });
 }
 
 export async function updatePanel() {

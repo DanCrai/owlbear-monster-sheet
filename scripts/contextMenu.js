@@ -1,4 +1,5 @@
 import { markTokenAsTracked } from "./token.js";
+import { updatePanel } from "./panel.js";
 
 export function setupContextMenu() {
     OBR.contextMenu.create({
@@ -14,6 +15,15 @@ export function setupContextMenu() {
         ],
         onClick: async (context) => {
             await markTokenAsTracked(context.items);
+
+            updatePanel();
+
+            OBR.popover.open({
+                id: "monster-sheet",
+                url: window.location.href,
+                height: 400,
+                width: 300
+            });
         }
     });
 }

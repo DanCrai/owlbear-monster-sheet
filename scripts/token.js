@@ -28,15 +28,17 @@ export async function markTokenAsTracked(items) {
 }
 
 // ASSIGN MONSTER FROM DROPDOWN
-export async function assignMonsterToToken(tokenId, monsterName) {
-    const monster = await loadMonster(monsterName);
+export async function assignMonsterToToken(tokenId, fileName) {
+    const monster = await loadMonster(fileName);
 
     await OBR.scene.items.updateItems([tokenId], (items) => {
         const item = items[0];
 
         item.metadata["monsterSheet"] = {
-            name: monsterName,
-            data: monster
+            name: monster.name,
+            file: fileName,
+            data: monster,
+            hp: monster.hp
         };
     });
 }

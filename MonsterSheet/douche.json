@@ -1,0 +1,36 @@
+{
+    "name": "Douche",
+    "hp": "1000",
+    "ac": "16",
+    "pa": "0",
+    "ma": "0",
+    "threshold": "1",
+    "resistances": [],
+    "immunities": [],
+    "vulnerabilities": [],
+    "abilities": [
+        {
+            "name": "bite",
+            "desc": null,
+            "damage": "10",
+            "damage_type": null,
+            "hit_type": null,
+            "hit_value": null,
+            "range": null,
+            "ap": null,
+            "cooldown": null,
+            "aoe": "none",
+            "type": "other",
+            "aoe_radius": null,
+            "projectile": false,
+            "effects": [],
+            "om_override": null,
+            "per_ap": 10.0,
+            "weight": 1
+        }
+    ],
+    "recovery_ap": "6",
+    "dm": "Defensive Might: 1000.00",
+    "om": "Total OM: 60.00",
+    "cm": "Combat Might: 60000.00"
+}

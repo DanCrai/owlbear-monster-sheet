@@ -57,8 +57,10 @@ export async function updatePanel() {
         <select id="monsterDropdown">
             <option value="">Select Monster</option>
             ${monsters.map(m =>
-        `<option value="${m}" ${monsterMeta.name === m ? "selected" : ""}>${m}</option>`
-    ).join("")}
+                `<option value="${m.file}" ${monsterMeta?.name === m.name ? "selected" : ""}>
+        ${m.name} (Might ${m.might})
+     </option>`
+            ).join("")}
         </select>
     </div>
     <hr/>
@@ -90,38 +92,68 @@ export async function updatePanel() {
 `;
 
     if (monsterMeta.data) {
-        const m = monsterMeta.data;
+        const m = monsterMeta?.data;
 
-        html += `
-        <div class="sheet">
-            <h3>${m.name}</h3>
-            <p>HP: ${m.hp}</p>
-            <p>DM: ${m.dm}</p>
-            <p>OM: ${m.om}</p>
-            <p>CM: ${m.cm}</p>
-        </div>
-    `;
+        if (!m) {
+            html += "<div>No monster selected</div>";
+        } else {
 
-        // abilties
-        if (m.abilities && m.abilities.length > 0) {
-            html += `<div class="sheet"><h3>Abilities</h3>`;
+            html += `
+<div class="sheet">
 
-            for (let ab of m.abilities) {
-                html += `
-                <div class="ability">
-                    <div class="ability-name">${ab.name}</div>
-                    ${ab.desc ? `<div class="small">${ab.desc}</div>` : ""}
-                    ${ab.damage ? `<div class="small">Damage: ${ab.damage}</div>` : ""}
-                    ${ab.ap ? `<div class="small">AP: ${ab.ap}</div>` : ""}
-                    ${ab.cooldown ? `<div class="small">CD: ${ab.cooldown}</div>` : ""}
-                </div>
-            `;
-            }
+<h2>${m.name}</h2>
+<p><i>${m.type || ""}</i></p>
 
-            html += `</div>`;
+<p><b>HP:</b> ${monsterMeta.hp ?? m.hp} | 
+<b>AC:</b> ${m.ac} | 
+<b>PA:</b> ${m.pa} | 
+<b>MA:</b> ${m.ma}</p>
+
+<p><b>Speed:</b> ${m.ms || "-"} ft</p>
+
+${m.extra_movement?.length ? `
+<p><b>Movement:</b> ${m.extra_movement.map(e => `${e.name} ${e.value}ft`).join(", ")}</p>
+` : ""}
+
+${m.senses?.length ? `
+<p><b>Senses:</b> ${m.senses.join(", ")}</p>
+` : ""}
+
+<p><b>Resist:</b> ${m.resistances?.join(", ") || "-"}</p>
+<p><b>Immune:</b> ${m.immunities?.join(", ") || "-"}</p>
+<p><b>Vulnerable:</b> ${m.vulnerabilities?.join(", ") || "-"}</p>
+<p><b>Absorb:</b> ${m.absorb?.join(", ") || "-"}</p>
+<p><b>Frail:</b> ${m.frail?.join(", ") || "-"}</p>
+
+<p><b>Might:</b> ${m.might} 
+(OM: ${m.om || "-"} / DM: ${m.dm || "-"} / CM: ${m.cm || "-"})</p>
+
+<hr/>
+
+<h3>Abilities</h3>
+
+${m.abilities.map(ab => `
+<div style="margin-bottom:8px;">
+    <b>${ab.name}</b> (${ab.ap || "-"} AP${ab.cooldown ? `; CD ${ab.cooldown}` : ""})<br/>
+
+    ${ab.damage ? `[${ab.damage}] ${ab.damage_type || ""}<br/>` : ""}
+
+    ${ab.hit_type === "attack" ? `+${ab.hit_value} to hit<br/>` : ""}
+    ${ab.hit_type === "save" ? `DC ${ab.hit_value} ${ab.damage_type || ""}<br/>` : ""}
+
+    ${ab.range ? `Range: ${ab.range} ft<br/>` : ""}
+
+    ${ab.desc ? `${ab.desc}<br/>` : ""}
+
+    ${ab.effects?.length ? `
+        Effects: ${ab.effects.map(e => `${e.type}(${e.stacks})`).join(", ")}<br/>
+    ` : ""}
+</div>
+`).join("")}
+
+</div>
+`;
         }
-    } else {
-        html += `<p>No monster selected</p>`;
     }
 
     sheet.innerHTML = html;

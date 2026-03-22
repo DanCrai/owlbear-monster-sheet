@@ -1,0 +1,92 @@
+{
+    "name": "Hound",
+    "type": "Beast",
+    "size": "Medium",
+    "description": "Big Bad Doggo",
+    "hp": "1000",
+    "ac": "16",
+    "pa": "5",
+    "ma": "12",
+    "ms": "30",
+    "flying": "",
+    "swimming": "",
+    "attributes": {
+        "str": "12",
+        "dex": "5",
+        "con": "11",
+        "int": "12",
+        "wis": "5",
+        "will": "16",
+        "cha": "4"
+    },
+    "skills": "stealth +50; perception +5",
+    "saving_throws": "dex +6 str +4",
+    "condition_immunities": "blinded",
+    "resistances": [
+        "poison"
+    ],
+    "immunities": [
+        "force"
+    ],
+    "vulnerabilities": [
+        "fire"
+    ],
+    "absorb": [
+        "crushing"
+    ],
+    "frail": [
+        "piercing"
+    ],
+    "abilities": [
+        {
+            "name": "Bite",
+            "desc": "Bite a bich",
+            "damage": "12+3d4",
+            "damage_type": "piercing",
+            "hit_type": "attack",
+            "hit_value": 4.0,
+            "range": 0.0,
+            "ap": 3.0,
+            "cooldown": null,
+            "aoe": "none",
+            "type": "other",
+            "aoe_radius": null,
+            "projectile": false,
+            "effects": [
+                {
+                    "type": "Maimed",
+                    "stacks": 1
+                }
+            ],
+            "om_override": null,
+            "per_ap": 9.786111111111111,
+            "weight": 1
+        },
+        {
+            "name": "Might Breath",
+            "desc": "Breathes fire cause why dafaq not",
+            "damage": "43+6d12",
+            "damage_type": "fire",
+            "hit_type": "save",
+            "hit_value": 14.0,
+            "range": 30.0,
+            "ap": 6.0,
+            "cooldown": 6.0,
+            "aoe": "cone",
+            "type": "other",
+            "aoe_radius": 15.0,
+            "projectile": false,
+            "effects": [],
+            "om_override": null,
+            "per_ap": 18.15275,
+            "weight": 0.16666666666666666
+        }
+    ],
+    "starting_ap": "6",
+    "recovery_ap": "6",
+    "max_ap": "10",
+    "might": "1",
+    "dm": "Defensive Might: 1164.21",
+    "om": "Total OM: 65.89",
+    "cm": "Combat Might: 76707.55"
+}

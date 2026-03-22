@@ -1,10 +1,26 @@
 {
     "name": "Dragon",
+    "type": "",
+    "size": "",
+    "description": "",
     "hp": "1000",
     "ac": "20",
     "pa": "50",
     "ma": "50",
-    "threshold": "10",
+    "ms": "",
+    "extra_movement": [],
+    "attributes": {
+        "str": "",
+        "dex": "",
+        "con": "",
+        "int": "",
+        "wis": "",
+        "will": "",
+        "cha": ""
+    },
+    "skills": {},
+    "saving_throws": {},
+    "condition_immunities": [],
     "resistances": [
         "slashing",
         "piercing",
@@ -16,6 +32,8 @@
     "vulnerabilities": [
         "ice"
     ],
+    "absorb": [],
+    "frail": [],
     "abilities": [
         {
             "name": "Bite",
@@ -61,7 +79,10 @@
             "weight": 0.16666666666666666
         }
     ],
+    "starting_ap": "",
     "recovery_ap": "6",
+    "max_ap": "",
+    "might": "111",
     "dm": "Defensive Might: 2470.84",
     "om": "Total OM: 272.28",
     "cm": "Combat Might: 672763.84"

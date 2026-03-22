@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Goblin",
+        "file": "goblin.json",
+        "type": "",
+        "might": "11"
+    },
+    {
+        "name": "Dragon",
+        "file": "dragon.json",
+        "type": "",
+        "might": "111"
+    },
+    {
+        "name": "Hound",
+        "file": "hound.json",
+        "type": "Beast",
+        "might": "1111"
+    }
+]

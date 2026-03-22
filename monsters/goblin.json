@@ -1,13 +1,31 @@
 {
     "name": "Goblin",
+    "type": "",
+    "size": "",
+    "description": "",
     "hp": "40",
     "ac": "14",
     "pa": "0",
     "ma": "0",
-    "threshold": "1",
+    "ms": "",
+    "extra_movement": [],
+    "attributes": {
+        "str": "",
+        "dex": "",
+        "con": "",
+        "int": "",
+        "wis": "",
+        "will": "",
+        "cha": ""
+    },
+    "skills": {},
+    "saving_throws": {},
+    "condition_immunities": [],
     "resistances": [],
     "immunities": [],
     "vulnerabilities": [],
+    "absorb": [],
+    "frail": [],
     "abilities": [
         {
             "name": "Sword",
@@ -48,7 +66,10 @@
             "weight": 1
         }
     ],
+    "starting_ap": "",
     "recovery_ap": "6",
+    "max_ap": "",
+    "might": "11",
     "dm": "Defensive Might: 36.36",
     "om": "Total OM: 19.24",
     "cm": "Combat Might: 699.48"

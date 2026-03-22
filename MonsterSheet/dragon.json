@@ -1,0 +1,68 @@
+{
+    "name": "Dragon",
+    "hp": "1000",
+    "ac": "20",
+    "pa": "50",
+    "ma": "50",
+    "threshold": "10",
+    "resistances": [
+        "slashing",
+        "piercing",
+        "crushing"
+    ],
+    "immunities": [
+        "fire"
+    ],
+    "vulnerabilities": [
+        "ice"
+    ],
+    "abilities": [
+        {
+            "name": "Bite",
+            "desc": "Bites target",
+            "damage": "62+8d10",
+            "damage_type": "piercing",
+            "hit_type": "attack",
+            "hit_value": 8.0,
+            "range": 0.0,
+            "ap": 3.0,
+            "cooldown": null,
+            "aoe": "none",
+            "type": "weapon",
+            "aoe_radius": null,
+            "projectile": false,
+            "effects": [],
+            "om_override": null,
+            "per_ap": 40.63333333333333,
+            "weight": 1
+        },
+        {
+            "name": "Breath",
+            "desc": "Breathes fire",
+            "damage": "128+16d12",
+            "damage_type": "fire",
+            "hit_type": "save",
+            "hit_value": 17.0,
+            "range": 0.0,
+            "ap": 6.0,
+            "cooldown": 6.0,
+            "aoe": "cone",
+            "type": "other",
+            "aoe_radius": 30.0,
+            "projectile": false,
+            "effects": [
+                {
+                    "type": "Impaired",
+                    "stacks": 5
+                }
+            ],
+            "om_override": null,
+            "per_ap": 73.86166666666666,
+            "weight": 0.16666666666666666
+        }
+    ],
+    "recovery_ap": "6",
+    "dm": "Defensive Might: 2470.84",
+    "om": "Total OM: 272.28",
+    "cm": "Combat Might: 672763.84"
+}

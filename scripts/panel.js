@@ -20,7 +20,7 @@ const DAMAGE_TYPES = {
 function formatMod(stat) {
     if (stat === undefined || stat === null) return "";
     let mod = Math.floor((stat - 10) / 2);
-    return stat >= 0 ? `+${stat}` : `${stat}`;
+    return mod >= 0 ? `+${mod}` : `${mod}`;
 }
 
 export function setupPanel() {

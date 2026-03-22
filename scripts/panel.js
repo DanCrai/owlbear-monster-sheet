@@ -17,6 +17,12 @@ const DAMAGE_TYPES = {
     pure: "magical"
 };
 
+function formatMod(stat) {
+    if (stat === undefined || stat === null) return "";
+    let mod = Math.floor((stat - 10) / 2);
+    return stat >= 0 ? `+${stat}` : `${stat}`;
+}
+
 export function setupPanel() {
     updatePanel();
 
@@ -115,15 +121,46 @@ ${m.extra_movement?.length ? `
 <p><b>Movement:</b> ${m.extra_movement.map(e => `${e.name} ${e.value}ft`).join(", ")}</p>
 ` : ""}
 
-${m.senses?.length ? `
-<p><b>Senses:</b> ${m.senses.join(", ")}</p>
-` : ""}
-
 <p><b>Resist:</b> ${m.resistances?.join(", ") || "-"}</p>
 <p><b>Immune:</b> ${m.immunities?.join(", ") || "-"}</p>
 <p><b>Vulnerable:</b> ${m.vulnerabilities?.join(", ") || "-"}</p>
 <p><b>Absorb:</b> ${m.absorb?.join(", ") || "-"}</p>
 <p><b>Frail:</b> ${m.frail?.join(", ") || "-"}</p>
+
+<p>
+<b>AP:</b>
+Start ${m.starting_ap ?? "-"} | 
+Recovery ${m.recovery_ap ?? "-"} | 
+Max ${m.max_ap ?? "-"}
+</p>
+
+${m.attributes ? `
+<p>
+<b>STR</b> ${m.attributes.str} (${formatMod(m.attributes.str)}) &nbsp;
+<b>DEX</b> ${m.attributes.dex} (${formatMod(m.attributes.dex)}) &nbsp;
+<b>CON</b> ${m.attributes.con} (${formatMod(m.attributes.con)}) &nbsp;<br/>
+<b>INT</b> ${m.attributes.int} (${formatMod(m.attributes.int)}) &nbsp;
+<b>WIS</b> ${m.attributes.wis} (${formatMod(m.attributes.wis)}) &nbsp;
+<b>WILL</b> ${m.attributes.will} (${formatMod(m.attributes.will)}) &nbsp;
+<b>CHA</b> ${m.attributes.cha} (${formatMod(m.attributes.cha)})
+</p>
+` : ""}
+
+${m.saving_throws && Object.keys(m.saving_throws).length ? `
+<p><b>Saving Throws:</b> 
+${Object.entries(m.saving_throws).map(([k, v]) => `${k} +${v}`).join(", ")}
+</p>
+` : ""}
+
+${m.skills && Object.keys(m.skills).length ? `
+<p><b>Skills:</b> 
+${Object.entries(m.skills).map(([k, v]) => `${k} +${v}`).join(", ")}
+</p>
+` : ""}
+
+${m.senses?.length ? `
+<p><b>Senses:</b> ${m.senses.join(", ")}</p>
+` : ""}
 
 <p><b>Might:</b> ${m.might} 
 (OM: ${m.om || "-"} / DM: ${m.dm || "-"} / CM: ${m.cm || "-"})</p>

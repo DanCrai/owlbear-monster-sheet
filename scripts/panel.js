@@ -24,18 +24,28 @@ function formatMod(stat) {
 }
 
 export function setupPanel() {
-    updatePanel();
+    const sheet = document.getElementById("sheet");
+    if (!sheet) return;
 
-    OBR.player.onChange(() => {
-        updatePanel();
-    });
+    OBR.player.getRole().then((role) => {
+        if (role !== "GM") {
+            sheet.innerHTML = "<i>DM only</i>";
+            return;
+        }
 
-    OBR.scene.items.onChange(() => {
+        // Only GM gets updates
+        OBR.player.onChange(() => {
+            updatePanel();
+        });
+
         updatePanel();
     });
 }
 
 export async function updatePanel() {
+    const role = await OBR.player.getRole();
+    if (role !== "GM") return;
+
     const sheet = document.getElementById("sheet");
     if (!sheet) return;
 
@@ -72,10 +82,11 @@ export async function updatePanel() {
     <hr/>
 `;
 
-    var hp = 0;
+    let hp = 0;
     if (monsterMeta.data) {
         hp = monsterMeta.data.hp;
     }
+    console.log("Hp is: " + hp);
     html += `
     <div class="sheet">
         <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
@@ -216,7 +227,8 @@ ${m.abilities.map(ab => `
         const newHp = calculateDamage(monsterMeta, dmg, type);
 
         await OBR.scene.items.updateItems([token.id], (items) => {
-            items[0].metadata.monsterSheet.hp = newHp;
+            //items[0].metadata.monsterSheet.hp = newHp;
+            items[0].metadata.hp = newHp;
         });
 
         updatePanel();

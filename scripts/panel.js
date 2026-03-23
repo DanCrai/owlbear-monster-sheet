@@ -83,8 +83,8 @@ export async function updatePanel() {
 `;
 
     let hp = 0;
-    if (monsterMeta.data) {
-        hp = monsterMeta.data.hp;
+    if (token.metadata) {
+        hp = token.metadata.hp;
     }
     console.log("Hp is: " + hp);
     html += `
@@ -224,7 +224,7 @@ ${m.abilities.map(ab => `
 
         if (!dmg || dmg <= 0) return;
 
-        const newHp = calculateDamage(monsterMeta, dmg, type);
+        const newHp = calculateDamage(monsterMeta, dmg, type, hp);
 
         await OBR.scene.items.updateItems([token.id], (items) => {
             //items[0].metadata.monsterSheet.hp = newHp;
@@ -244,7 +244,7 @@ ${m.abilities.map(ab => `
     };
 }
 
-function calculateDamage(monsterMeta, dmg, type) {
+function calculateDamage(monsterMeta, dmg, type, currentHp) {
     const m = monsterMeta.data;
 
     let final = dmg;
@@ -253,9 +253,15 @@ function calculateDamage(monsterMeta, dmg, type) {
     const resist = m.resistances || [];
     const immune = m.immunities || [];
     const vuln = m.vulnerabilities || [];
+    const absorb = m.absorb || [];
+    const frail = m.frail || [];
 
     if (immune.includes(type)) {
         final = 0;
+    } else if (absorb.includes(type)) {
+        final *= -1;
+    } else if (frail.includes(type)) {
+        final *= 4;
     } else {
         if (resist.includes(type)) final *= 0.5;
         if (vuln.includes(type)) final *= 2;
@@ -271,8 +277,6 @@ function calculateDamage(monsterMeta, dmg, type) {
     }
 
     final = Math.max(0, Math.floor(final));
-
-    const currentHp = monsterMeta.hp ?? m.hp;
 
     return Math.max(0, currentHp - final);
 }

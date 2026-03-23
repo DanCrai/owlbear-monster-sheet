@@ -7,11 +7,13 @@ import { setupSelectionListener } from "./scripts/token.js";
 
 console.log("MAIN JS LOADED");
 window.OBR = OBR;
-OBR.onReady(() => {
+OBR.onReady(async () => {
     const role = await OBR.player.getRole();
+
     if (role !== "GM") return;
+
     document.body.style.display = "block";
-    console.log("Monster extension loaded");
+
     window.OBR_READY = true;
     setupContextMenu();
     setupSelectionListener();

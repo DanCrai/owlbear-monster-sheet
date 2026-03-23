@@ -63,6 +63,10 @@ NEGATIVE_EFFECTS = [
     "Impaired", "Exposed", "Corroded"
 ]
 
+DOT_EFFECTS = [
+    "Burning", "Envenomed", "Wounded"
+]
+
 EFFECT_BASE_AP = {
     "Stunned": 8,
     "Paralyzed": 6,
@@ -103,6 +107,8 @@ EFFECT_BASE_AP = {
 BASELINE_PLAYER_OM = 65  # example, you decide this
 BASELINE_AP = 6
 BASE_STACK_VALUE = BASELINE_PLAYER_OM / BASELINE_AP
+
+passives = []
 
 
 # -------------------------
@@ -213,6 +219,7 @@ def build_monster_data():
         "frail": [lb_frail.get(i) for i in lb_frail.curselection()],
 
         "abilities": abilities,
+        "passives": passives,
 
         "starting_ap": entry_start_ap.get(),
         "recovery_ap": entry_recovery_ap.get(),
@@ -363,6 +370,10 @@ def load_monster():
     abilities = data.get("abilities", [])
     update_ability_list()
 
+    global passives
+    passives = data.get("passives", [])
+    update_passive_list()
+
     # --- OTHER ---
     entry_recovery_ap.delete(0, tk.END)
     entry_recovery_ap.insert(0, data.get("recovery_ap", ""))
@@ -372,9 +383,75 @@ def load_monster():
     cm_var.set(data.get("cm", ""))
 
 
+def update_passive_list():
+    passive_listbox.delete(0, tk.END)
+
+    for p in passives:
+        if p["type"] == "additive":
+            passive_listbox.insert(tk.END, f"{p['name']} (+{p['value']} OM)")
+        else:
+            passive_listbox.insert(tk.END, f"{p['name']} (x{p['value']})")
+
+
+def remove_passive():
+    selection = passive_listbox.curselection()
+    if selection:
+        passives.pop(selection[0])
+        update_passive_list()
+
+
 def view_sheet():
     data = build_monster_data()
     MonsterSheet(root, data)
+
+
+class PassiveEditor(tk.Toplevel):
+    def __init__(self, master, passive=None, index=None):
+        super().__init__(master)
+
+        self.title("Passive Editor")
+        self.geometry("300x250")
+
+        self.index = index
+
+        tk.Label(self, text="Name").pack()
+        self.entry_name = tk.Entry(self)
+        self.entry_name.pack()
+
+        tk.Label(self, text="Description").pack()
+        self.entry_desc = tk.Text(self, height=3)
+        self.entry_desc.pack()
+
+        tk.Label(self, text="Type").pack()
+        self.type_box = ttk.Combobox(self, values=["additive", "multiplier"])
+        self.type_box.pack()
+
+        tk.Label(self, text="Value").pack()
+        self.entry_value = tk.Entry(self)
+        self.entry_value.pack()
+
+        tk.Button(self, text="Save", command=self.save).pack(pady=5)
+
+        if passive:
+            self.entry_name.insert(0, passive.get("name", ""))
+            self.type_box.set(passive.get("type", "additive"))
+            self.entry_value.insert(0, passive.get("value", ""))
+
+    def save(self):
+        passive = {
+            "name": self.entry_name.get(),
+            "desc": self.entry_desc.get("1.0", tk.END).strip() or None,
+            "type": self.type_box.get(),
+            "value": float(self.entry_value.get()) if self.entry_value.get() else 0
+        }
+
+        if self.index is not None:
+            passives[self.index] = passive
+        else:
+            passives.append(passive)
+
+        update_passive_list()
+        self.destroy()
 
 
 class AbilityEditor(tk.Toplevel):
@@ -471,8 +548,15 @@ class AbilityEditor(tk.Toplevel):
             self.load_ability()
 
     def update_effects_display(self):
-        text = ", ".join([f"{e['type']}({e['stacks']})" for e in self.effects])
-        self.effects_label.config(text=text)
+        parts = []
+
+        for e in self.effects:
+            if "stacks" in e:
+                parts.append(f"{e['type']}({e['stacks']})")
+            else:
+                parts.append(f"{e['type']}({e['value']} for {e['duration']})")
+
+        self.effects_label.config(text=", ".join(parts))
 
     def update_aoe_label(self, event=None):
         if self.aoe_type.get() == "multi":
@@ -483,22 +567,67 @@ class AbilityEditor(tk.Toplevel):
     def add_effect(self):
         win = tk.Toplevel(self)
 
-        tk.Label(win, text="Effect").pack()
-        effect_type = ttk.Combobox(win, values=NEGATIVE_EFFECTS)
+        tk.Label(win, text="Effect Type").pack()
+        effect_type = ttk.Combobox(
+            win,
+            values=NEGATIVE_EFFECTS + DOT_EFFECTS
+        )
         effect_type.pack()
 
-        tk.Label(win, text="Stacks").pack()
-        stacks_entry = tk.Entry(win)
+        # --- STACK INPUT ---
+        stack_frame = tk.Frame(win)
+        tk.Label(stack_frame, text="Stacks").pack()
+        stacks_entry = tk.Entry(stack_frame)
         stacks_entry.pack()
 
-        def save_effect():
-            self.effects.append({
-                "type": effect_type.get(),
-                "stacks": int(stacks_entry.get())
-            })
+        # --- DOT INPUT ---
+        dot_frame = tk.Frame(win)
 
-            self.update_effects_display()
-            win.destroy()
+        tk.Label(dot_frame, text="Value (DoT)").pack()
+        value_entry = tk.Entry(dot_frame)
+        value_entry.pack()
+
+        tk.Label(dot_frame, text="Duration").pack()
+        duration_entry = tk.Entry(dot_frame)
+        duration_entry.pack()
+
+        # --- SWITCH LOGIC ---
+        def update_fields(event=None):
+            t = effect_type.get()
+
+            # Clear both
+            stack_frame.pack_forget()
+            dot_frame.pack_forget()
+
+            if t in DOT_EFFECTS:
+                dot_frame.pack()
+            elif t:
+                stack_frame.pack()
+
+        effect_type.bind("<<ComboboxSelected>>", update_fields)
+
+        # --- SAVE ---
+        def save_effect():
+            t = effect_type.get()
+
+            try:
+                if t in DOT_EFFECTS:
+                    self.effects.append({
+                        "type": t,
+                        "value": float(value_entry.get()),
+                        "duration": float(duration_entry.get())
+                    })
+                else:
+                    self.effects.append({
+                        "type": t,
+                        "stacks": int(stacks_entry.get())
+                    })
+
+                self.update_effects_display()
+                win.destroy()
+
+            except Exception as e:
+                print("Effect save error:", e)
 
         tk.Button(win, text="Save", command=save_effect).pack()
 
@@ -651,16 +780,38 @@ def range_modifier(range_val):
         return 1.3
 
 
+def duration_multiplier(duration):
+    if duration <= 1:
+        return 1
+    return 1/(2**(duration-1)) + duration_multiplier(duration - 1)
+
+
 def calculate_effect_om(ability):
     total = 0
 
     for effect in ability.get("effects", []):
-        effect_type = effect["type"]
-        stacks = effect["stacks"]
 
-        effect_ap = EFFECT_BASE_AP.get(effect_type, 2)
+        # --- STACK EFFECTS ---
+        if "stacks" in effect:
+            effect_type = effect["type"]
+            stacks = effect["stacks"]
 
-        total += stacks * effect_ap * BASE_STACK_VALUE
+            effect_ap = EFFECT_BASE_AP.get(effect_type, 2)
+            total += stacks * effect_ap * BASE_STACK_VALUE
+
+        # --- DOT EFFECTS ---
+        elif "value" in effect and "duration" in effect:
+            val = effect["value"]
+            dur = effect["duration"]
+
+            mult = duration_multiplier(dur)
+            dot_value = val * mult
+
+            # wounded = double trigger
+            if effect["type"] == "wounded":
+                dot_value *= 2
+
+            total += dot_value
 
     return total
 
@@ -722,8 +873,22 @@ def calculate_total_om():
         if total_weights == 0:
             om = 0
         else:
-            avg_per_ap = total_weighted / total_weights
-            om = avg_per_ap * recovery_ap
+            avg_per_ap = total_weighted / total_weights if total_weights else 0
+            base_om = avg_per_ap * recovery_ap
+
+            # --- ADDITIVE PASSIVES ---
+            additive_bonus = sum(
+                p["value"] for p in passives if p["type"] == "additive"
+            )
+
+            # --- MULTIPLIERS ---
+            multiplier = 1
+            for p in passives:
+                if p["type"] == "multiplier":
+                    multiplier *= p["value"]
+
+            # --- FINAL OM ---
+            om = (base_om + additive_bonus) * multiplier
 
         om_result_var.set(f"Total OM: {om:.2f}")
 
@@ -1121,6 +1286,17 @@ ability_listbox.bind("<<ListboxSelect>>", on_ability_select)
 tk.Button(frame_right, text="Add Ability",
           command=lambda: AbilityEditor(root)).grid(row=2, column=0)
 tk.Button(frame_right, text="Remove", command=remove_selected).grid(row=2, column=1)
+
+tk.Label(frame_right, text="Passives").grid(row=11, column=0)
+
+passive_listbox = tk.Listbox(frame_right, width=40, height=6)
+passive_listbox.grid(row=12, column=0, columnspan=2)
+
+tk.Button(frame_right, text="Add Passive",
+          command=lambda: PassiveEditor(root)).grid(row=13, column=0)
+
+tk.Button(frame_right, text="Remove Passive",
+          command=lambda: remove_passive()).grid(row=13, column=1)
 
 tk.Button(root, text="Save Monster", command=save_monster) \
     .grid(row=1, column=0, columnspan=1)

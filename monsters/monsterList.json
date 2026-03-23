@@ -9,12 +9,18 @@
         "name": "Dragon",
         "file": "dragon.json",
         "type": "",
-        "might": "111"
+        "might": "1111111"
     },
     {
         "name": "Hound",
         "file": "hound.json",
         "type": "Beast",
         "might": "1111"
+    },
+    {
+        "name": "GoblinWithPassive",
+        "file": "goblinwithpassive.json",
+        "type": "",
+        "might": "11"
     }
 ]

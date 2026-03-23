@@ -72,18 +72,31 @@
                 {
                     "type": "Impaired",
                     "stacks": 5
+                },
+                {
+                    "type": "Burning",
+                    "value": 50.0,
+                    "duration": 6.0
                 }
             ],
             "om_override": null,
-            "per_ap": 73.86166666666666,
+            "per_ap": 60.10791666666666,
             "weight": 0.16666666666666666
+        }
+    ],
+    "passives": [
+        {
+            "name": "Predator",
+            "desc": "Crits on prone targets.",
+            "type": "multiplier",
+            "value": 1.25
         }
     ],
     "starting_ap": "",
     "recovery_ap": "6",
     "max_ap": "",
-    "might": "111",
+    "might": "1111111",
     "dm": "Defensive Might: 2470.84",
-    "om": "Total OM: 272.28",
-    "cm": "Combat Might: 672763.84"
+    "om": "Total OM: 325.62",
+    "cm": "Combat Might: 804544.11"
 }

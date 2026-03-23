@@ -1,4 +1,4 @@
-import { getMonsterList } from "./storage.js";
+﻿import { getMonsterList } from "./storage.js";
 import { getSelectedToken, getSelectedMonsterData, assignMonsterToToken } from "./token.js";
 
 const DAMAGE_TYPES = {
@@ -16,6 +16,21 @@ const DAMAGE_TYPES = {
     spectral: "magical",
     pure: "magical"
 };
+
+function makeSection(title, content, defaultOpen = true) {
+    const id = "sec_" + Math.random().toString(36).substring(2, 9);
+
+    return `
+        <div class="section">
+            <div class="section-header" data-target="${id}" style="cursor:pointer; font-weight:bold;">
+                ▶ ${title}
+            </div>
+            <div id="${id}" style="display:${defaultOpen ? "block" : "none"}; margin-top:5px;">
+                ${content}
+            </div>
+        </div>
+    `;
+}
 
 function formatMod(stat) {
     if (stat === undefined || stat === null) return "";
@@ -42,6 +57,42 @@ export function setupPanel() {
     });
 }
 
+function formatEffects(effects) {
+    if (!effects || effects.length === 0) return "";
+
+    const parts = effects.map(e => {
+        if (e.stacks !== undefined) {
+            return `${e.type}(${e.stacks})`;
+        } else if (e.value !== undefined && e.duration !== undefined) {
+            return `${e.type} [${e.value} x ${e.duration}]`;
+        }
+        return e.type;
+    });
+
+    return `<div class="effects">Effects: ${parts.join(", ")}</div>`;
+}
+
+function renderPassives(passives) {
+    if (!passives || passives.length === 0) return "";
+
+    return `
+        <div class="section">
+            <h4>Passives</h4>
+            ${passives.map(p => `
+                <div class="ability">
+                    <div><strong>${p.name}</strong> (passive)</div>
+                    ${p.desc ? `<div class="desc">${p.desc}</div>` : ""}
+                    <div>
+                        ${p.type === "add"
+            ? `+${p.value} OM per turn`
+            : `x${p.value} total OM`}
+                    </div>
+                </div>
+            `).join("")}
+        </div>
+    `;
+}
+
 export async function updatePanel() {
     const role = await OBR.player.getRole();
     if (role !== "GM") return;
@@ -65,7 +116,7 @@ export async function updatePanel() {
 
     const monsters = await getMonsterList();
 
-    // --- TOP SECTION ---
+    //  TOP SECTION 
     let html = `
     <div class="topbar">
         <strong>${token.name || "Unnamed Token"}</strong>
@@ -115,9 +166,8 @@ export async function updatePanel() {
             html += "<div>No monster selected</div>";
         } else {
 
-            html += `
-<div class="sheet">
-
+            //  STATS SECTION 
+            const statsSection = `
 <h2>${m.name}</h2>
 <p><i>${m.type || ""}</i></p>
 
@@ -131,19 +181,6 @@ export async function updatePanel() {
 ${m.extra_movement?.length ? `
 <p><b>Movement:</b> ${m.extra_movement.map(e => `${e.name} ${e.value}ft`).join(", ")}</p>
 ` : ""}
-
-<p><b>Resist:</b> ${m.resistances?.join(", ") || "-"}</p>
-<p><b>Immune:</b> ${m.immunities?.join(", ") || "-"}</p>
-<p><b>Vulnerable:</b> ${m.vulnerabilities?.join(", ") || "-"}</p>
-<p><b>Absorb:</b> ${m.absorb?.join(", ") || "-"}</p>
-<p><b>Frail:</b> ${m.frail?.join(", ") || "-"}</p>
-
-<p>
-<b>AP:</b>
-Start ${m.starting_ap ?? "-"} | 
-Recovery ${m.recovery_ap ?? "-"} | 
-Max ${m.max_ap ?? "-"}
-</p>
 
 ${m.attributes ? `
 <p>
@@ -175,11 +212,26 @@ ${m.senses?.length ? `
 
 <p><b>Might:</b> ${m.might} 
 (OM: ${m.om || "-"} / DM: ${m.dm || "-"} / CM: ${m.cm || "-"})</p>
+`;
 
-<hr/>
+            //  DEFENSE SECTION 
+            const defenseSection = `
+<p><b>Resist:</b> ${m.resistances?.join(", ") || "-"}</p>
+<p><b>Immune:</b> ${m.immunities?.join(", ") || "-"}</p>
+<p><b>Vulnerable:</b> ${m.vulnerabilities?.join(", ") || "-"}</p>
+<p><b>Absorb:</b> ${m.absorb?.join(", ") || "-"}</p>
+<p><b>Frail:</b> ${m.frail?.join(", ") || "-"}</p>
 
-<h3>Abilities</h3>
+<p>
+<b>AP:</b>
+Start ${m.starting_ap ?? "-"} | 
+Recovery ${m.recovery_ap ?? "-"} | 
+Max ${m.max_ap ?? "-"}
+</p>
+`;
 
+            //  ABILITIES + PASSIVES 
+            const abilitiesSection = `
 ${m.abilities.map(ab => `
 <div style="margin-bottom:8px;">
     <b>${ab.name}</b> (${ab.ap || "-"} AP${ab.cooldown ? `; CD ${ab.cooldown}` : ""})<br/>
@@ -193,12 +245,26 @@ ${m.abilities.map(ab => `
 
     ${ab.desc ? `${ab.desc}<br/>` : ""}
 
-    ${ab.effects?.length ? `
-        Effects: ${ab.effects.map(e => `${e.type}(${e.stacks})`).join(", ")}<br/>
-    ` : ""}
+    ${formatEffects(ab.effects)}
 </div>
 `).join("")}
 
+${m.passives?.map(p => `
+<div style="margin-bottom:8px;">
+    <b>${p.name}</b> (passive)<br/>
+    ${p.desc ? `${p.desc}<br/>` : ""}
+    ${p.type === "add"
+                    ? `+${p.value} OM per turn`
+                    : `x${p.value} total OM`}
+</div>
+`).join("") || ""}
+`;
+
+            html += `
+<div class="sheet">
+    ${makeSection("Stats", statsSection, true)}
+    ${makeSection("Defenses", defenseSection, false)}
+    ${makeSection("Abilities & Passives", abilitiesSection, true)}
 </div>
 `;
         }
@@ -206,7 +272,18 @@ ${m.abilities.map(ab => `
 
     sheet.innerHTML = html;
 
-    // --- HP MANUAL EDIT ---
+    //  COLLAPSIBLE LOGIC 
+    document.querySelectorAll(".section-header").forEach(header => {
+        header.onclick = () => {
+            const target = document.getElementById(header.dataset.target);
+            const isOpen = target.style.display === "block";
+
+            target.style.display = isOpen ? "none" : "block";
+            header.textContent = (isOpen ? "▶ " : "▼ ") + header.textContent.slice(2);
+        };
+    });
+
+    //  HP MANUAL EDIT 
     document.getElementById("hpInput").onchange = async (e) => {
         const newHp = Number(e.target.value);
 
@@ -217,7 +294,7 @@ ${m.abilities.map(ab => `
         updatePanel();
     };
 
-    // --- APPLY DAMAGE ---
+    //  APPLY DAMAGE 
     document.getElementById("applyDmg").onclick = async () => {
         const dmg = Number(document.getElementById("dmgInput").value);
         const type = document.getElementById("dmgType").value;
@@ -234,7 +311,7 @@ ${m.abilities.map(ab => `
         updatePanel();
     };
 
-    // --- DROPDOWN EVENT ---
+    //  DROPDOWN EVENT 
     document.getElementById("monsterDropdown").onchange = async (e) => {
         const value = e.target.value;
         if (!value) return;
@@ -249,7 +326,7 @@ function calculateDamage(monsterMeta, dmg, type, currentHp) {
 
     let final = dmg;
 
-    // --- RESIST / IMMUNE / VULN ---
+    //  RESIST / IMMUNE / VULN 
     const resist = m.resistances || [];
     const immune = m.immunities || [];
     const vuln = m.vulnerabilities || [];
@@ -267,7 +344,7 @@ function calculateDamage(monsterMeta, dmg, type, currentHp) {
         if (vuln.includes(type)) final *= 2;
     }
 
-    // --- ARMOR (PA / MA) ---
+    //  ARMOR (PA / MA) 
     const category = DAMAGE_TYPES[type]; // physical / magical
 
     if (category === "physical") {

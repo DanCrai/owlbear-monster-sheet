@@ -22,8 +22,8 @@ function makeSection(title, content, defaultOpen = true) {
 
     return `
         <div class="section">
-            <div class="section-header" data-target="${id}" style="cursor:pointer; font-weight:bold;">
-                ▶ ${title}
+            <div class="section-header" data-target="${id}" data-open="${defaultOpen}">
+                ${title}
             </div>
             <div id="${id}" style="display:${defaultOpen ? "block" : "none"}; margin-top:5px;">
                 ${content}
@@ -159,6 +159,15 @@ export async function updatePanel() {
     </div>
 `;
 
+    html += `
+<div style="margin-top:10px;">
+    <b>Notes:</b><br/>
+    <textarea id="notesBox" 
+        style="width:100%; min-height:60px; resize:vertical;"
+        placeholder="AP usage, conditions, reminders...">${monsterMeta.notes || ""}</textarea>
+</div>
+`;
+
     if (monsterMeta.data) {
         const m = monsterMeta?.data;
 
@@ -272,14 +281,32 @@ ${m.passives?.map(p => `
 
     sheet.innerHTML = html;
 
+    // NOTES
+    const notesBox = document.getElementById("notesBox");
+
+    if (notesBox) {
+        notesBox.oninput = async (e) => {
+            const value = e.target.value;
+
+            await OBR.scene.items.updateItems([token.id], (items) => {
+                items[0].metadata.monsterSheet.notes = value;
+            });
+        };
+    }
+
     //  COLLAPSIBLE LOGIC 
     document.querySelectorAll(".section-header").forEach(header => {
-        header.onclick = () => {
-            const target = document.getElementById(header.dataset.target);
-            const isOpen = target.style.display === "block";
+        const target = document.getElementById(header.dataset.target);
 
-            target.style.display = isOpen ? "none" : "block";
-            header.textContent = (isOpen ? "▶ " : "▼ ") + header.textContent.slice(2);
+        // initialize arrow
+        const isOpen = header.dataset.open === "true";
+        header.textContent = (isOpen ? "▼ " : "▶ ") + header.textContent;
+
+        header.onclick = () => {
+            const open = target.style.display === "block";
+
+            target.style.display = open ? "none" : "block";
+            header.textContent = (open ? "▶ " : "▼ ") + header.textContent.slice(2);
         };
     });
 
@@ -317,6 +344,17 @@ ${m.passives?.map(p => `
         if (!value) return;
 
         await assignMonsterToToken(token.id, value);
+
+        // reload monster data to get base HP
+        const newData = await getSelectedMonsterData(token.id);
+
+        await OBR.scene.items.updateItems([token.id], (items) => {
+            const item = items[0];
+
+            item.metadata.monsterSheet.hp = newData.hp; // reset to base HP
+            item.metadata.hp = newData.hp; // (you are also using this separately)
+        });
+
         updatePanel();
     };
 }

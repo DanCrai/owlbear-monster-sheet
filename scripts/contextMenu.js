@@ -9,9 +9,9 @@ export function setupContextMenu() {
                 icon: "https://dancrai.github.io/owlbear-monster-sheet/context-menu-monster-icon-original.svg",
                 label: "Attach Monster",
                 filter: {
+                    roles: "GM",
                     every: [
-                        { key: "layer", value: "CHARACTER" },
-                        () => OBR.player.role === "GM"
+                        { key: "layer", value: "CHARACTER" }
                     ]
                 }
             }

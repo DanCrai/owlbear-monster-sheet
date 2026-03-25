@@ -11,7 +11,7 @@ export function setupContextMenu() {
                 filter: {
                     every: [
                         { key: "layer", value: "CHARACTER" },
-                        { key: "playerRole", value: "GM" }
+                        () => OBR.player.role === "GM"
                     ]
                 }
             }

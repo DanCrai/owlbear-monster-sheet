@@ -9,7 +9,11 @@ export function setupContextMenu() {
                 icon: "https://dancrai.github.io/owlbear-monster-sheet/context-menu-monster-icon-original.svg",
                 label: "Attach Monster",
                 filter: {
+<<<<<<< HEAD
                     roles: "GM",
+=======
+                    roles: ["GM"],
+>>>>>>> 0ac405a (attempt to fix 2)
                     every: [
                         { key: "layer", value: "CHARACTER" }
                     ]

@@ -1,0 +1,99 @@
+{
+    "name": "Skeleton",
+    "type": "Undead",
+    "size": "Medium",
+    "description": "",
+    "hp": "40",
+    "ac": "8",
+    "pa": "0",
+    "ma": "0",
+    "ms": "40",
+    "extra_movement": [],
+    "attributes": {
+        "str": "10",
+        "dex": "11",
+        "con": "10",
+        "int": "9",
+        "wis": "8",
+        "will": "12",
+        "cha": "8"
+    },
+    "skills": {},
+    "saving_throws": {},
+    "condition_immunities": [],
+    "resistances": [
+        "slashing",
+        "fire",
+        "ice",
+        "shadow"
+    ],
+    "immunities": [
+        "piercing"
+    ],
+    "vulnerabilities": [
+        "crushing",
+        "force"
+    ],
+    "absorb": [],
+    "frail": [],
+    "abilities": [
+        {
+            "name": "Scratch",
+            "desc": "You can attack with your claws for (dex modifier + 2/level + 1d6) slashing damage",
+            "damage": "4+1d6",
+            "damage_type": "slashing",
+            "hit_type": "attack",
+            "hit_value": 3.0,
+            "range": 5.0,
+            "ap": 2.0,
+            "cooldown": null,
+            "aoe": "none",
+            "type": "other",
+            "aoe_radius": null,
+            "projectile": false,
+            "effects": [
+                {
+                    "type": "Wounded",
+                    "value": 3.0,
+                    "duration": 2.0
+                }
+            ],
+            "om_override": null,
+            "per_ap": 3.9375,
+            "weight": 1
+        },
+        {
+            "name": "Spin Scratch",
+            "desc": "You can attack with your claws for (dex modifier + 1d6) slashing damage all the enemies in melee range",
+            "damage": "4+1d6",
+            "damage_type": "slashing",
+            "hit_type": "attack",
+            "hit_value": 3.0,
+            "range": 5.0,
+            "ap": 4.0,
+            "cooldown": null,
+            "aoe": "self_aoe",
+            "type": "other",
+            "aoe_radius": 5.0,
+            "projectile": false,
+            "effects": [
+                {
+                    "type": "Wounded",
+                    "value": 3.0,
+                    "duration": 2.0
+                }
+            ],
+            "om_override": null,
+            "per_ap": 2.1796875,
+            "weight": 1
+        }
+    ],
+    "passives": [],
+    "starting_ap": "6",
+    "recovery_ap": "6",
+    "max_ap": "10",
+    "might": "1",
+    "dm": "Defensive Might: 33.48",
+    "om": "Total OM: 18.35",
+    "cm": "Combat Might: 614.41"
+}

@@ -34,5 +34,11 @@
     "file": "skeleton.json",
     "type": "Undead",
     "might": "1"
+  },
+  {
+    "name": "Wraith",
+    "file": "wraith.json",
+    "type": "Undead",
+    "might": "1"
   }
 ]

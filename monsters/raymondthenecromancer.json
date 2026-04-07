@@ -111,7 +111,7 @@
         {
             "name": "Corpse Explosion",
             "desc": "You make a corpse explode. Targets within 10 ft of it must roll a Dex saving throw. On a fail they take [2 x spell modifier + 21 + 6d8] force damage. On a success they take only half.",
-            "damage": "25+6d8",
+            "damage": "10+1d8",
             "damage_type": "force",
             "hit_type": "save",
             "hit_value": 13.0,
@@ -124,7 +124,7 @@
             "projectile": false,
             "effects": [],
             "om_override": null,
-            "per_ap": 13.346666666666666,
+            "per_ap": 3.721666666666667,
             "weight": 1
         },
         {
@@ -168,7 +168,7 @@
         {
             "name": "Corosive touch",
             "desc": "Make a melee spell attack against a creature. On a hit the target takes [2 x spell modifier + 30 + 4d12] poison damage and their AC is reduced by [2] (cannot stack)",
-            "damage": "13+2d12",
+            "damage": "9+1d10",
             "damage_type": "shadow",
             "hit_type": "attack",
             "hit_value": 3.0,
@@ -181,7 +181,7 @@
             "projectile": false,
             "effects": [],
             "om_override": null,
-            "per_ap": 3.9000000000000004,
+            "per_ap": 2.1750000000000003,
             "weight": 1
         }
     ],
@@ -189,8 +189,8 @@
     "starting_ap": "6",
     "recovery_ap": "6",
     "max_ap": "15",
-    "might": "1",
+    "might": "11",
     "dm": "Defensive Might: 134.34",
-    "om": "Total OM: 19.36",
-    "cm": "Combat Might: 2600.40"
+    "om": "Total OM: 10.84",
+    "cm": "Combat Might: 1456.83"
 }

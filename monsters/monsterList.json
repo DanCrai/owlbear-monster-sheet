@@ -1,44 +1,50 @@
 [
-  {
-    "name": "Goblin",
-    "file": "goblin.json",
-    "type": "",
-    "might": "11"
-  },
-  {
-    "name": "Dragon",
-    "file": "dragon.json",
-    "type": "",
-    "might": "1111111"
-  },
-  {
-    "name": "Hound",
-    "file": "hound.json",
-    "type": "Beast",
-    "might": "1111"
-  },
-  {
-    "name": "GoblinWithPassive",
-    "file": "goblinwithpassive.json",
-    "type": "",
-    "might": "11"
-  },
-  {
-    "name": "Raymond",
-    "file": "raymondthenecromancer.json",
-    "type": "Humanoid",
-    "might": "1"
-  },
-  {
-    "name": "Skeleton",
-    "file": "skeleton.json",
-    "type": "Undead",
-    "might": "1"
-  },
-  {
-    "name": "Wraith",
-    "file": "wraith.json",
-    "type": "Undead",
-    "might": "1"
-  }
+    {
+        "name": "Goblin",
+        "file": "goblin.json",
+        "type": "",
+        "might": "11"
+    },
+    {
+        "name": "Dragon",
+        "file": "dragon.json",
+        "type": "",
+        "might": "1111111"
+    },
+    {
+        "name": "Hound",
+        "file": "hound.json",
+        "type": "Beast",
+        "might": "1111"
+    },
+    {
+        "name": "GoblinWithPassive",
+        "file": "goblinwithpassive.json",
+        "type": "",
+        "might": "11"
+    },
+    {
+        "name": "Raymond",
+        "file": "raymondthenecromancer.json",
+        "type": "Humanoid",
+        "might": "1"
+    },
+    {
+        "name": "Skeleton",
+        "file": "skeleton.json",
+        "type": "Undead",
+        "might": "1"
+    },
+    {
+        "name": "Wraith",
+        "file": "wraith.json",
+        "type": "Undead",
+        "might": "1"
+    },
+    {
+        "name": "Greg",
+        "file": "greg.json",
+        "type": "Demon",
+        "might": "31"
+    }
 ]
